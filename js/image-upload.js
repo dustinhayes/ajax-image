@@ -3,7 +3,7 @@
 
     var $uploaders = $('[data-image-upload]'),
         defaults,
-        upload;
+        triggerUpload;
 
     if (! $uploaders.length)
         return;
@@ -16,67 +16,63 @@
         resProp: null
     };
 
-    upload = function() {
+    triggerUpload = function() {
         var $this = $(this),
-            triggerUpload = function() {
-                var data = $this.data('image-upload'),
-                    options = $.extend(defaults, data),
-                    $input = $(options.input),
-                    submitChange = function() {
-                        var form = $(options.form)[0],
-                            formData,
-                            changeImages,
-                            getOrigin,
-                            ajaxOptions;
+            data = $this.data('image-upload'),
+            options = $.extend(defaults, data),
+            $input = $(options.input),
+            submitChange = function() {
+                var form = $(options.form)[0],
+                    formData,
+                    changeImages,
+                    getOrigin,
+                    ajaxOptions;
 
-                        if (! window.FormData)
-                            form.submit();
+                if (! window.FormData)
+                    form.submit();
 
-                        formData = new FormData( form );
+                formData = new FormData( form );
 
-                        changeImages = function(res) {
-                            var $images = $(options.images),
-                                setImage,
-                                src;
+                changeImages = function(res) {
+                    var $images = $(options.images),
+                        setImage,
+                        src;
 
-                            if (typeof res === 'string')
-                                res = JSON.parse(res);
+                    if (typeof res === 'string')
+                        res = JSON.parse(res);
 
-                            src = res[options.resProp];
+                    src = res[options.resProp];
 
-                            setImage = function() {
-                                var $this = $(this);
+                    setImage = function() {
+                        var $this = $(this);
 
-                                if ($this.is('img'))
-                                    $this.attr('src', src);
-                                else if (! $this.is('img'))
-                                    $this.css('background-image',
-                                              'url(' + src + ')');
-                            };
-
-                            $.each($images, setImage);
-                        };
-
-                        ajaxOptions = {
-                            type: 'POST',
-                            url: options.path,
-                            data: formData,
-                            cache: false,
-                            processData: false,
-                            contentType: false,
-                            success: changeImages
-                        };
-
-                        $.ajax(ajaxOptions);
-                        $input.off('change.image-upload');
+                        if ($this.is('img'))
+                            $this.attr('src', src);
+                        else if (! $this.is('img'))
+                            $this.css('background-image',
+                                      'url(' + src + ')');
                     };
 
-                $input.on('change.image-upload', submitChange);
-                $input.trigger('click.image-upload');
+                    $.each($images, setImage);
+                };
+
+                ajaxOptions = {
+                    type: 'POST',
+                    url: options.path,
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: changeImages
+                };
+
+                $.ajax(ajaxOptions);
+                $input.off('change.image-upload');
             };
 
-        $this.on('click.image-upload', triggerUpload);
+        $input.on('change.image-upload', submitChange);
+        $input.trigger('click.image-upload');
     };
 
-    $.each($uploaders, upload);
+    $uploaders.on('click.image-upload', triggerUpload);
 }());
