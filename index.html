@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax Image</title>
+    <style>
+        body * { display: block; }
+        div { width:300px; height: 300px; }
+        form { display: none; }
+    </style>
+</head>
+<body>
+    
+    <form data-cover-form action="">
+        <input type="file" data-cover-input>
+    </form>
+
+    <div data-cover-image></div>
+
+    <button data-image-upload='{
+            "input":"[data-cover-input]",
+            "images":"[data-cover-image]",
+            "form":"[data-cover-form]",
+            "resProp":"image",
+            "path":"/res.txt"
+        }'>
+        update your cover
+    </button>
+
+    <img data-cover-image src="" alt="">
+
+    <button data-image-upload='{
+            "input":"[data-cover-input]",
+            "images":"[data-cover-image]",
+            "form":"[data-cover-form]",
+            "resProp":"image",
+            "path":"/res.txt"
+        }'>
+        update your cover
+    </button>
+
+    <form data-user-image-form action="">
+        <input type="file" data-user-image-input>
+    </form>
+    
+    <img data-user-image src="" alt="">
+
+    <button data-image-upload='{
+            "input":"[data-user-image-input]",
+            "images":"[data-user-image]",
+            "form":"[data-user-image-form]",
+            "resProp":"image",
+            "path":"/res.txt"
+        }'>
+        update your profile image
+    </button>
+
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="js/image-upload.js"></script>
+</body>
+</html>
